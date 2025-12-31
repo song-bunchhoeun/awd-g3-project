@@ -2,7 +2,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
 
-namespace DGC.eKYC.Deeplink.Extension;
+namespace DGC.eKYC.Deeplink.Extensions;
 
 public static class HostBuilderExtension
 {

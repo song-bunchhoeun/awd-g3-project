@@ -8,7 +8,7 @@ namespace DGC.eKYC.Api.Extensions;
 
 public static class ApiVersionExtension
 {
-    public static void ConfigureAPI(this IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureApi(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddApiVersioning(options =>
         {
@@ -46,25 +46,5 @@ public static class ApiVersionExtension
                     }
                 };
             });
-    }
-
-    public static void ConfigureSwagger(this IServiceCollection services)
-    {
-        services.AddSwaggerGen(options =>
-        {
-            // Add a document for each API version
-            var provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
-            foreach (var description in provider.ApiVersionDescriptions)
-            {
-                options.SwaggerDoc(description.GroupName, new Microsoft.OpenApi.Models.OpenApiInfo
-                {
-                    Title = $"My API {description.GroupName}",
-                    Version = description.GroupName.Replace("v", "")
-                });
-            }
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            options.IncludeXmlComments(xmlPath);
-        });
     }
 }

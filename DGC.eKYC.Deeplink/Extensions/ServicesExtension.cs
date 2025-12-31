@@ -1,9 +1,9 @@
-﻿using Azure.Core.Serialization;
+﻿using System.Text.Json;
+using Azure.Core.Serialization;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
-using System.Text.Json;
 
-namespace DGC.eKYC.Deeplink.Extension;
+namespace DGC.eKYC.Deeplink.Extensions;
 
 public static class ServicesExtension
 {

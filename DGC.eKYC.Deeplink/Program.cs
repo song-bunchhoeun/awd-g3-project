@@ -1,4 +1,4 @@
-using DGC.eKYC.Deeplink.Extension;
+using DGC.eKYC.Deeplink.Extensions;
 using Microsoft.Extensions.Hosting;
 
 var hostBuilder = Host.CreateDefaultBuilder(args);

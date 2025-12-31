@@ -17,7 +17,9 @@ public static class BusinessServiceExtension
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
         };
 
-        //services.AddSingleton(serializerOption);
+        services.AddSingleton(serializerOption);
+
+
         //services.AddSingleton<IHashCompute, HashComputeService>();
         //services.AddSingleton<AcledaOperatorInfoStore>();
         //services.AddSingleton<ICryptoUtils, CryptoUtils>();

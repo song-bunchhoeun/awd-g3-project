@@ -31,22 +31,23 @@ public class DeeplinkController(ILogger<DeeplinkController> logger, IConfigurati
     //}
 
     [Function("deeplink")]
-    public Task<IActionResult> CreateDeeplink([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
+    public async Task<IActionResult> CreateDeeplink([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
     {
-        // Use ExecuteAsync<TModel> with the specific model for this function.
-        return ExecuteAsync<object>(req, async model =>
+        return await ExecuteAsync<object>(req, ProcessDeeplinkRequestAsync);
+    }
+
+    private async Task<IActionResult> ProcessDeeplinkRequestAsync(object model)
+    {
+        _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+        var testObj = new
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            test = _configuration.GetValue<string>("PonereaySecret1:Secret"),
+            abc = "abc",
+            received = model
+        };
 
-            var testObj = new
-            {
-                test = _configuration.GetValue<string>("PonereaySecret1:Secret"),
-                abc = "abc",
-                received = model
-            };
-
-            await Task.CompletedTask;
-            return new OkObjectResult(testObj);
-        });
+        await Task.CompletedTask;
+        return new OkObjectResult(testObj);
     }
 }

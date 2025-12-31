@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace DGC.eKYC.Deeplink.Extension;
+namespace DGC.eKYC.Deeplink.Extensions;
 
 public static class EnvConfigExtension
 {
