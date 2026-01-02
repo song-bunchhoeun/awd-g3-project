@@ -2,7 +2,7 @@
 using DGC.eKYC.Business.DTOs.CustomExceptions;
 using PhoneNumbers;
 
-namespace DGC.eKYC.Business.Services.Validations;
+namespace DGC.eKYC.Business.Services.Validations.ModelState;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class CambodianPhoneNumberValidationAttribute : ValidationAttribute
