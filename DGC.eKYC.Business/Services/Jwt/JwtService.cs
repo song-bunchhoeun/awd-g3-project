@@ -8,12 +8,10 @@ namespace DGC.eKYC.Business.Services.Jwt;
 
 public class JwtService(IConfiguration config) : IJwtService
 {
-    private readonly string _secretKey = config.GetValue<string>("Jwt:SecretKey")
-        ?? throw new InvalidOperationException("JWT Secret Key is not configured.");
-
     // Pre-calculate the key object for maximum efficiency in a Singleton
     private readonly SymmetricSecurityKey _signingKey = new(
-        Encoding.ASCII.GetBytes(config.GetValue<string>("Jwt:SecretKey")!));
+        Encoding.ASCII.GetBytes(config.GetValue<string>("Jwt:SecretKey")
+                                ?? throw new InvalidOperationException("JWT Secret Key is not configured.")));
 
     private readonly string _issuer = config.GetValue<string>("Jwt:Issuer") ?? "DefaultIssuer";
     private readonly string _audience = config.GetValue<string>("Jwt:Audience") ?? "DefaultAudience";
