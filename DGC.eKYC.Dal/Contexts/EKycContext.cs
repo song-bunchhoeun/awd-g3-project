@@ -392,6 +392,7 @@ public partial class EKycContext : DbContext
 
             entity.ToTable("OrgDGConnectClient");
 
+            entity.Property(e => e.Id).HasMaxLength(64);
             entity.Property(e => e.ClientName)
                 .IsRequired()
                 .HasMaxLength(50);

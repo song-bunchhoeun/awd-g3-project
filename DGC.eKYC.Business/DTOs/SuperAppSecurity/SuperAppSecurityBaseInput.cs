@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
-using DGC.eKYC.Business.Services.Validations.ModelState;
+﻿using DGC.eKYC.Business.Validations.ModelState;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DGC.eKYC.Business.DTOs.SuperAppSecurity;
 

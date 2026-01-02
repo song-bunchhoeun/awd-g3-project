@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DGC.eKYC.Business.Services.Validations.Api;
+namespace DGC.eKYC.Business.Validations.Api;
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
 public class SuperAppHashValidation : ActionFilterAttribute

@@ -2,7 +2,7 @@
 using DGC.eKYC.Business.DTOs.CustomExceptions;
 using DGC.eKYC.Business.DTOs.ProfileBase;
 
-namespace DGC.eKYC.Business.Services.Validations.ModelState;
+namespace DGC.eKYC.Business.Validations.ModelState;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class GenderValidationAttribute : ValidationAttribute

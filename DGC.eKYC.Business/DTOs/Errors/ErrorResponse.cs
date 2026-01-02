@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace DGC.eKYC.Business.DTOs.Errors;
 
-public class ErrorResponse(string code, string? message, List<ErrorDetail> details)
+public class ErrorResponse(string code, string? message, List<ErrorDetail>? details = null)
 {
     [Required]
     public ErrorDetail Error { get; set; } = new ErrorDetail(code, message, details);

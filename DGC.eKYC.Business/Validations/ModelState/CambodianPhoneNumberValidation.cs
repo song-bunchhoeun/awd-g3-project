@@ -2,7 +2,7 @@
 using DGC.eKYC.Business.DTOs.CustomExceptions;
 using PhoneNumbers;
 
-namespace DGC.eKYC.Business.Services.Validations.ModelState;
+namespace DGC.eKYC.Business.Validations.ModelState;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class CambodianPhoneNumberValidationAttribute : ValidationAttribute
@@ -25,9 +25,9 @@ public class CambodianPhoneNumberValidationAttribute : ValidationAttribute
 
             return ValidationResult.Success;
         }
-        catch 
+        catch
         {
-            return new ValidationResult("The value is not a Cambodian Phone Number type. eg: 017123456");
+            return new ValidationResult("The value is not a Cambodian Phone Number type. eg: 017123456", new[] { "PhoneNumber" });
         }
     }
 }

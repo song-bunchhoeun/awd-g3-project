@@ -1,3 +1,9 @@
+using DGC.eKYC.Business.DTOs.CustomExceptions;
+using DGC.eKYC.Business.DTOs.Deeplink;
+using DGC.eKYC.Business.DTOs.Errors;
+using DGC.eKYC.Business.Mapper;
+using DGC.eKYC.Business.Services.Deeplink;
+using DGC.eKYC.Business.Services.Jwt;
 using DGC.eKYC.Deeplink.Attributes;
 using DGC.eKYC.Deeplink.Functions.Base;
 using Microsoft.AspNetCore.Http;
@@ -8,46 +14,46 @@ using Microsoft.Extensions.Logging;
 
 namespace DGC.eKYC.Deeplink.Functions;
 
-[ApiVersion("2025-05-09")] 
-public class DeeplinkController(ILogger<DeeplinkController> logger, IConfiguration configuration) : BaseFunction(configuration)
+[ApiVersion("2025-11-20")]
+public class DeeplinkController(
+    ILogger<DeeplinkController> logger,
+    IConfiguration configuration, 
+    IJwtService jwtService,
+    IDeeplinkService deeplinkService) : BaseFunction(configuration)
 {
     private readonly ILogger<DeeplinkController> _logger = logger;
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IJwtService _jwtService = jwtService;
+    private readonly IDeeplinkService _deeplinkService = deeplinkService;
 
-    //[Function("api/deeplink")]
-    //public async Task<IActionResult> CreateDeeplink([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
-    //{
-    //    _logger.LogInformation("C# HTTP trigger function processed a request.");
-
-    //    var testObj = new
-    //    {
-    //        test =  "test",
-    //        abc = "abc"
-    //    };
-
-    //    await Task.CompletedTask;
-
-    //    return new OkObjectResult(testObj);
-    //}
-
-    [Function("deeplink")]
-    public async Task<IActionResult> CreateDeeplink([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
+    [Function("generate-deeplink")]
+    public async Task<IActionResult> CreateDeeplink(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "deeplink/generate-mno")] HttpRequest req, 
+        CancellationToken cancellationToken)
     {
-        return await ExecuteAsync<object>(req, ProcessDeeplinkRequestAsync);
+        return await ExecuteAsync<GenerateDeeplinkInputDto>(req, ProcessDeeplinkRequestAsync, cancellationToken);
     }
 
-    private async Task<IActionResult> ProcessDeeplinkRequestAsync(object model)
+    private async Task<IActionResult> ProcessDeeplinkRequestAsync(
+        HttpRequest req, 
+        GenerateDeeplinkInputDto generateDeeplinkInputDto, 
+        CancellationToken cancellationToken)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        generateDeeplinkInputDto.ToCleaned();
 
-        var testObj = new
-        {
-            test = _configuration.GetValue<string>("PonereaySecret1:Secret"),
-            abc = "abc",
-            received = model
-        };
+        var authTokenAvailable = req.Headers.TryGetValue("Authorization", out var authToken);
+        if (!authTokenAvailable)
+            throw new CustomHttpResponseException(
+                400, 
+                new ErrorResponse("missing_auth_token", "Please attach Authorization Token to Header!"));
 
-        await Task.CompletedTask;
-        return new OkObjectResult(testObj);
+        var mnoDgConnectClientId = _jwtService.GetClaimValue<string>(authToken.ToString(), "sub");
+        if (string.IsNullOrEmpty(mnoDgConnectClientId))
+            throw new CustomHttpResponseException(403,
+                new ErrorResponse("malformed_token", "Authorize Token is malformed!"));
+
+        var response = 
+            await _deeplinkService.GenerateDeeplink(generateDeeplinkInputDto, mnoDgConnectClientId, cancellationToken);
+
+        return new OkObjectResult(response);
     }
 }

@@ -7,7 +7,7 @@ namespace DGC.eKYC.Dal.Models;
 
 public partial class OrgDgconnectClient
 {
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     public int OrgId { get; set; }
 

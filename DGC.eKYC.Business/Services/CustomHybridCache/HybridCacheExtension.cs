@@ -22,4 +22,20 @@ public static class HybridCacheExtensions
 
         return result;
     }
+
+    public static async Task CreateCacheAsync<T>(this HybridCache cache, string key, T value, int validMinutes, string tag, CancellationToken cancellationToken)
+    {
+        var entryOptions = new HybridCacheEntryOptions
+        {
+            Expiration = TimeSpan.FromMinutes(validMinutes),
+            Flags = HybridCacheEntryFlags.DisableLocalCache
+        };
+
+        await cache.SetAsync(
+            key,
+            value,
+            entryOptions,
+            [tag],
+            cancellationToken);
+    }
 }

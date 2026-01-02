@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using DGC.eKYC.Business.DTOs.CustomExceptions;
 
-namespace DGC.eKYC.Business.Services.Validations.ModelState;
+namespace DGC.eKYC.Business.Validations.ModelState;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class Base64ImageValidationAttribute : ValidationAttribute

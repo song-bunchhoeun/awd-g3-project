@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using DGC.eKYC.Business.DTOs.SecurityBaseRequest;
 
-namespace DGC.eKYC.Business.Services.Validations.ModelState;
+namespace DGC.eKYC.Business.Validations.ModelState;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class SuperAppUserLevelValidation : ValidationAttribute
