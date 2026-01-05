@@ -11,11 +11,13 @@ public partial class EkycTransaction
 
     public int OrgId { get; set; }
 
-    public int? DealerId { get; set; }
+    public string DealerId { get; set; }
 
     public string OsType { get; set; }
 
-    public string DeviceId { get; set; }
+    public string SuperAppUserId { get; set; }
+
+    public string SuperAppDeviceId { get; set; }
 
     public string DeviceOsVersion { get; set; }
 

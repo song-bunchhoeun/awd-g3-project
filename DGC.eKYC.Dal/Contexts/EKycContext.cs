@@ -170,9 +170,7 @@ public partial class EKycContext : DbContext
             entity.Property(e => e.DealerId)
                 .IsRequired()
                 .HasMaxLength(64);
-            entity.Property(e => e.DealerName)
-                .IsRequired()
-                .HasMaxLength(128);
+            entity.Property(e => e.DealerName).HasMaxLength(128);
             entity.Property(e => e.IsUsed).HasAnnotation("Relational:DefaultConstraintName", "DF_DeepLinkRequest_IsUsed");
             entity.Property(e => e.PhoneNumber)
                 .IsRequired()
@@ -220,12 +218,16 @@ public partial class EKycContext : DbContext
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getutcdate())")
                 .HasAnnotation("Relational:DefaultConstraintName", "DF_EkycTransaction_CreatedAt");
-            entity.Property(e => e.DeviceId).HasMaxLength(255);
+            entity.Property(e => e.DealerId).HasMaxLength(64);
             entity.Property(e => e.DeviceOsVersion).HasMaxLength(255);
-            entity.Property(e => e.EkycOption)
-                .IsRequired()
-                .HasMaxLength(20);
+            entity.Property(e => e.EkycOption).HasMaxLength(20);
             entity.Property(e => e.OsType).HasMaxLength(255);
+            entity.Property(e => e.SuperAppDeviceId)
+                .IsRequired()
+                .HasMaxLength(255);
+            entity.Property(e => e.SuperAppUserId)
+                .IsRequired()
+                .HasMaxLength(36);
 
             entity.HasOne(d => d.DeeplinkRequest).WithOne(p => p.EkycTransaction)
                 .HasForeignKey<EkycTransaction>(d => d.DeeplinkRequestId)
