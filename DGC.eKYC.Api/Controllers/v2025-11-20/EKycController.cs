@@ -1,5 +1,6 @@
 using Asp.Versioning;
 using DGC.eKYC.Business.DTOs.Errors;
+using DGC.eKYC.Business.DTOs.SuperAppSecurity;
 using DGC.eKYC.Business.Services.Deeplink;
 using DGC.eKYC.Business.Validations.Api;
 using Microsoft.AspNetCore.Mvc;
@@ -30,8 +31,12 @@ public class EKycController(
     [ProducesResponseType(StatusCodes.Status429TooManyRequests, Type = typeof(ErrorResponse))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(ErrorResponse))]
     [HttpPost("test")]
-    public async Task<IActionResult> PostValidateTest([FromBody] object data, CancellationToken cancellationToken)
+    public async Task<IActionResult> PostValidateTest([FromBody] TestC data, CancellationToken cancellationToken)
     {
         return Ok();
     }
+}
+
+public class TestC : SuperAppSecurityBaseInput
+{
 }

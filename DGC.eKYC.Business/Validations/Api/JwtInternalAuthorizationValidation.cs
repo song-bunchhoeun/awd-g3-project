@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DGC.eKYC.Business.Validations.Api;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false)]
-public sealed class JwtInternalAuthorizationValidation: ActionFilterAttribute
+public sealed class JwtInternalAuthorizationValidation : ActionFilterAttribute
 {
     private const string Scheme = "Bearer";
 
@@ -42,14 +42,14 @@ public sealed class JwtInternalAuthorizationValidation: ActionFilterAttribute
         try
         {
             var valid = jwtService.IsTokenValid(token);
-            if (valid)
-                await next();
+            if (!valid)
+                throw new CustomHttpResponseException(
+                    410,
+                    new ErrorResponse(
+                        "bad_request",
+                        "Authorization Validation failed for the request."));
 
-            throw new CustomHttpResponseException(
-                410,
-                new ErrorResponse(
-                    "bad_request",
-                    "Authorization Validation failed for the request."));
+            await next();
         }
         catch (Exception ex)
         when (ex is not CustomHttpResponseException)
