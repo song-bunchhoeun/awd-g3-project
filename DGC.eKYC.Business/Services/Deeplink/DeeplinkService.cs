@@ -57,11 +57,14 @@ public class DeeplinkService(
         var miniAppActionName = _configuration.GetValue<string?>("SuperAppSettings:MiniAppActionName", "action")
                             ?? throw new ArgumentNullException(nameof(configuration), "missing eKyc miniapp action name");
 
+        var miniAppHost = _configuration.GetValue<string?>("SuperAppSettings:MiniAppHost");
+
         var queryParams = generateDeeplinkInputInputDto.ToParamDictionary(
-            eKycMiniAppId, 
-            timestamp.ToString(), 
-            deeplinkIdStr, 
-            clientEntity.OrgId, 
+            eKycMiniAppId,
+            timestamp.ToString(),
+            deeplinkIdStr,
+            clientEntity.OrgId,
+            miniAppHost,
             miniAppActionName);
 
         var callbackUrl = QueryHelpers.AddQueryString(superAppRedirectUrl, queryParams);
@@ -119,7 +122,7 @@ public class DeeplinkService(
                 { "orgId", cacheDto.OrgId.ToString() },
                 { "eKycTransactionId", eKycTransactionId.ToString() }
             };
-            var response = _jwtService.GenerateToken(eKycTransactionId.ToString(), eKycTransactionExpiration,nowTime, jwtParams);
+            var response = _jwtService.GenerateToken(eKycTransactionId.ToString(), eKycTransactionExpiration, nowTime, jwtParams);
             return new ValidateDeeplinkOutputDto(response, eKycTransactionExpiration, nowTime.Date);
         }
         catch (CustomHttpResponseException ex)
