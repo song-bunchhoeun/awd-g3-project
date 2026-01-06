@@ -14,9 +14,9 @@ public class SuperAppHashValidation : ActionFilterAttribute
     public override void OnActionExecuting(ActionExecutingContext context)
     {
         var hashCompute = context.HttpContext.RequestServices.GetRequiredService<IHashCompute>() ??
-                          throw new CustomHttpResponseException(500, new ErrorResponse("di-error", "", []));
+                          throw new CustomHttpResponseException(500, new ErrorResponse("di-error", ""));
         var configuration = context.HttpContext.RequestServices.GetService<IConfiguration>() ??
-                            throw new CustomHttpResponseException(500, new ErrorResponse("di-error", "", []));
+                            throw new CustomHttpResponseException(500, new ErrorResponse("di-error", ""));
 
         try
         {
@@ -26,10 +26,8 @@ public class SuperAppHashValidation : ActionFilterAttribute
                 var isValid = hashCompute.ValidateCheckSum(securityInput.InitData);
 
                 if (!isValid)
-                {
                     throw new CustomHttpResponseException(403,
-                        new ErrorResponse("forbidden", "Hash Key is invalid", []));
-                }
+                        new ErrorResponse("forbidden", "Hash Key is invalid"));
 
                 hashCompute.PopulateSecurityField(securityInput, securityInput.InitData);
                 hashCompute.ValidateSecurityFieldInput(securityInput);
@@ -41,10 +39,8 @@ public class SuperAppHashValidation : ActionFilterAttribute
                 var elapsed = now - createdTime;
 
                 if (elapsed.TotalSeconds >= initDataExpirationSecond)
-                {
                     throw new CustomHttpResponseException(403,
-                        new ErrorResponse("forbidden", "Hash Key is expired", []));
-                }
+                        new ErrorResponse("forbidden", "Hash Key is expired"));
             }
             else
             {
@@ -57,7 +53,7 @@ public class SuperAppHashValidation : ActionFilterAttribute
         }
         catch
         {
-            throw new CustomHttpResponseException(403, new ErrorResponse("forbidden", "Hash Key is invalid", []));
+            throw new CustomHttpResponseException(403, new ErrorResponse("forbidden", "Hash Key is invalid"));
         }
     }
 }
