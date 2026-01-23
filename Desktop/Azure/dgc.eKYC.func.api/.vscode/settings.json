@@ -1,0 +1,9 @@
+{
+    "azureFunctions.deploySubpath": "DGC.eKYC.Deeplink/bin/Release/net8.0/publish",
+    "azureFunctions.projectLanguage": "C#",
+    "azureFunctions.projectRuntime": "~4",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "publish (functions)",
+    "appService.defaultWebAppToDeploy": "/subscriptions/acb18d75-c574-49c8-a4d5-21c23c0b107e/resourceGroups/bunchhouen-test/providers/Microsoft.Web/sites/azureweb",
+    "appService.deploySubpath": "."
+}

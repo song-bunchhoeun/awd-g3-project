@@ -1,0 +1,68 @@
+name: Reusable Deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+        description: 'Environment to deploy to (dev, staging, prod)'
+
+      environment:
+        required: true
+        type: string
+        description: 'Environment to deploy to (webapp, functionapp)'
+    secrets:
+      AZURE_CLIENT_ID:
+        required: true
+        description: 'Azure User Assigned Identity Client ID'
+      TENANT_ID:
+        required: true
+        description: 'Azure Tenant ID'
+      SUB_ID:
+        required: true
+        description: 'Azure Subscription ID'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.TENANT_ID }}
+          subscription-id: ${{ secrets.SUB_ID }}
+
+      - name: Build and Publish
+        if: ${{ inputs.environment == 'webapp' }}
+        run: dotnet publish DGC.eKYC.Api/DGC.eKYC.Api.csproj -c Release -o ./publish
+
+      - name: Build and Publish
+        if: ${{ inputs.environment == 'functionapp' }}
+        run: dotnet publish DGC.eKYC.Deeplink/DGC.eKYC.Deeplink.csproj -c Release -o ./publish
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: ./publish
+
+      - name: Deploy to Azure Function App
+        uses: azure/functions-action@v1
+        with:
+          app-name: ${{ vars.AZURE_FUNCTIONAPP_NAME }}
+          package: ./publish

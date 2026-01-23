@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="DGC.eKYC.Api/DGC.eKYC.Api.csproj" />
+  <Project Path="DGC.eKYC.Business/DGC.eKYC.Business.csproj" Id="40eb052e-fedc-49f2-9849-0364b5605779" />
+  <Project Path="DGC.eKYC.Dal/DGC.eKYC.Dal.csproj" Id="18debf01-2104-46ae-b8a1-f68887459276" />
+  <Project Path="DGC.eKYC.Deeplink/DGC.eKYC.Deeplink.csproj" Id="305b4ae4-2510-4eaa-8cd2-6eb565ceecee" />
+</Solution>
