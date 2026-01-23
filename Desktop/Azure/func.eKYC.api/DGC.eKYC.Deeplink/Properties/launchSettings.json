@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "DGC.eKYC.Deeplink": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7060",
+      "launchBrowser": false
+    }
+  }
+}
